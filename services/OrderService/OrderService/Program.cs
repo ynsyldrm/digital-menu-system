@@ -6,6 +6,7 @@ using OrderService.Application.Sagas;
 using OrderService.Application.Consumers;
 using OrderService.Domain.Entities;
 using OrderService;
+using OrderService.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,7 @@ builder.Services.AddMassTransit(x =>
     x.AddSagaStateMachine<OrderProcessingStateMachine, OrderProcessingSagaState>()
         .EntityFrameworkRepository(r =>
         {
+            r.ExistingDbContext<OrderDbContext>();
         });
 
     x.AddConsumer<OrderPlacedConsumer>();

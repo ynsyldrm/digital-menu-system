@@ -14,7 +14,8 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<MenuDbContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
+                b => b.MigrationsAssembly("MenuService.Infrastructure")));
 
         services.AddScoped<IMenuItemRepository, MenuItemRepository>();
         services.AddScoped<IOutboxMessageRepository, OutboxMessageRepository>();
@@ -27,6 +28,7 @@ public static class DependencyInjection
         services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
+            cfg.RegisterServicesFromAssembly(typeof(MenuService.Application.Handlers.GetMenuItemsQueryHandler).Assembly);
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(OutboxBehavior<,>));
         });
 

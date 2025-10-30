@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  namespace: digital-menu-system
+data:
+  POSTGRES_DB_MENU: "MenuDb"
+  POSTGRES_DB_ORDER: "OrderDb"
+  POSTGRES_DB_KITCHEN: "KitchenDb"
+  POSTGRES_USER: "postgres"
+  POSTGRES_PASSWORD: "password"

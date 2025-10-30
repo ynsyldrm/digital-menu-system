@@ -1,0 +1,76 @@
+# ---------- Git & Core ----------
+.venv/
+*.pyc
+__pycache__/
+.git/
+.gitignore
+.gitlab-ci.yml
+.github/    # CI config – keep only if you want it under source control
+
+# ---------- .NET ----------
+**/bin/
+**/obj/
+**/Debug/
+**/Release/
+**/*.user
+**/*.suo
+**/*.sdf
+**/*.cache
+**/*.db
+*.db
+*.sqlite
+*.mdf
+*.ldf
+*.nupkg
+
+# ---------- Node / Frontend ----------
+frontend/node_modules/
+frontend/.vite/
+frontend/dist/
+frontend/coverage/
+frontend/.eslintcache
+
+# ---------- Docker ----------
+**/*.dockerfile
+**/*.dockerignore
+**/docker-compose.yml
+**/docker-compose.override.yml
+**/docker-compose.*.yml
+**/docker-compose.*.yaml
+**/Dockerfile*
+**/.docker
+
+# ---------- Kubernetes ----------
+k8s/*.yaml
+k8s/*.yml
+
+# ---------- Logs & Temp ----------
+*.log
+*.tmp
+*.temp
+*.pid
+*.seed
+*.seed.lock
+
+# ---------- Sensitive ----------
+.env
+*.env
+*.env.*
+*.local
+*.secret
+*.pem
+*.key
+*.crt
+*.pfx
+
+# ---------- Miscellaneous ----------
+*.tmp
+*.bak
+*.backup
+*.swp
+*.swo
+*.swn
+*.DS_Store
+*.idea/
+*.vs/
+.vscode/

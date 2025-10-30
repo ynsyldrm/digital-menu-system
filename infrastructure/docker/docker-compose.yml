@@ -1,0 +1,135 @@
+version: '3.8'
+
+services:
+  postgres-menu:
+    image: postgres:15
+    container_name: postgres-menu
+    environment:
+      POSTGRES_DB: MenuDb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_menu_data:/var/lib/postgresql/data
+    networks:
+      - digitalmenu-network
+
+  postgres-order:
+    image: postgres:15
+    container_name: postgres-order
+    environment:
+      POSTGRES_DB: OrderDb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_order_data:/var/lib/postgresql/data
+    networks:
+      - digitalmenu-network
+
+  postgres-kitchen:
+    image: postgres:15
+    container_name: postgres-kitchen
+    environment:
+      POSTGRES_DB: KitchenDb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_kitchen_data:/var/lib/postgresql/data
+    networks:
+      - digitalmenu-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: password
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - digitalmenu-network
+
+  menu-service:
+    build:
+      context: ../../services/MenuService
+      dockerfile: MenuService/Dockerfile
+    container_name: menu-service
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:80
+      ConnectionStrings__DefaultConnection: Host=postgres-menu;Port=5432;Database=MenuDb;Username=postgres;Password=password
+    ports:
+      - "5001:80"
+    depends_on:
+      - postgres-menu
+      - rabbitmq
+    networks:
+      - digitalmenu-network
+
+  order-service:
+    build:
+      context: ../../services
+      dockerfile: OrderService/OrderService/Dockerfile
+    container_name: order-service
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:80
+      ConnectionStrings__DefaultConnection: Host=postgres-order;Port=5432;Database=OrderDb;Username=postgres;Password=password
+    ports:
+      - "5002:80"
+    depends_on:
+      - postgres-order
+      - rabbitmq
+    networks:
+      - digitalmenu-network
+
+  kitchen-service:
+    build:
+      context: ../../services/KitchenService
+      dockerfile: KitchenService/Dockerfile
+    container_name: kitchen-service
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:80
+      ConnectionStrings__DefaultConnection: Host=postgres-kitchen;Port=5432;Database=KitchenDb;Username=postgres;Password=password
+    ports:
+      - "5003:80"
+    depends_on:
+      - postgres-kitchen
+      - rabbitmq
+    networks:
+      - digitalmenu-network
+
+  frontend:
+    build:
+      context: ../../frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: http://menu-service
+    ports:
+      - "3000:3000"
+    depends_on:
+      - menu-service
+      - order-service
+      - kitchen-service
+    networks:
+      - digitalmenu-network
+
+volumes:
+  postgres_menu_data:
+  postgres_order_data:
+  postgres_kitchen_data:
+  rabbitmq_data:
+
+networks:
+  digitalmenu-network:
+    driver: bridge

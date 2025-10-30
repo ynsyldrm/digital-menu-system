@@ -31,14 +31,14 @@ frontend/coverage/
 frontend/.eslintcache
 
 # ---------- Docker ----------
-**/*.dockerfile
-**/*.dockerignore
-**/docker-compose.yml
-**/docker-compose.override.yml
-**/docker-compose.*.yml
-**/docker-compose.*.yaml
-**/Dockerfile*
-**/.docker
+# **/*.dockerfile
+# **/*.dockerignore
+# **/docker-compose.yml
+# **/docker-compose.override.yml
+# **/docker-compose.*.yml
+# **/docker-compose.*.yaml
+# **/Dockerfile*
+# **/.docker
 
 # ---------- Kubernetes ----------
 k8s/*.yaml

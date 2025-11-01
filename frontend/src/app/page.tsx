@@ -5,6 +5,7 @@ import { useMenuItems } from '@/hooks/useMenu';
 import { useCreateOrder } from '@/hooks/useOrders';
 import { MenuCard } from '@/components/MenuCard';
 import { OrderSummary } from '@/components/OrderSummary';
+import { AddMenuItemForm } from '@/components/AddMenuItemForm';
 import { MenuItem, OrderItem } from '@/types';
 
 export default function HomePage() {
@@ -80,7 +81,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <header className="text-center mb-8">
+        <header className="text-center mb-8 bg-yellow-100">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
             🍽️ Digital Menu & Order System
           </h1>
@@ -92,11 +93,14 @@ export default function HomePage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Menu Section */}
           <div className="lg:col-span-2">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-6">Our Menu</h2>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-semibold text-gray-900">Our Menu</h2>
+              <AddMenuItemForm />
+            </div>
 
             {menuItems && menuItems.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {menuItems.map((item) => (
+                {menuItems.map((item: MenuItem) => (
                   <MenuCard
                     key={item.id}
                     item={item}

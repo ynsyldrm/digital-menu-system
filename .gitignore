@@ -29,6 +29,7 @@ frontend/.vite/
 frontend/dist/
 frontend/coverage/
 frontend/.eslintcache
+frontend/.next
 
 # ---------- Docker ----------
 # **/*.dockerfile

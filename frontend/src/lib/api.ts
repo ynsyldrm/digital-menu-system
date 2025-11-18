@@ -34,13 +34,13 @@ export const orderApi = {
       quantity: number;
       unitPrice: number;
     }>;
-  }) => api.post('/api/orders', data),
+  }) => api.post('/api/orders', data, { baseURL: 'http://localhost:5002' }),
 
   getOrder: (orderId: string) =>
-    api.get(`/api/orders/${orderId}`),
+    api.get(`/api/orders/${orderId}`, { baseURL: 'http://localhost:5002' }),
 
   updateOrderStatus: (orderId: string, status: string, notes?: string) =>
-    api.put(`/api/orders/${orderId}/status`, { status, notes }),
+    api.put(`/api/orders/${orderId}/status`, { status, notes }, { baseURL: 'http://localhost:5002' }),
 };
 
 // Kitchen Service API

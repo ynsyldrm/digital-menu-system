@@ -124,17 +124,17 @@ services:
     networks:
       - digitalmenu-network
   
-  pg-admin4-management:
-    image: dpage/pgadmin4
-    env_file:
-      - .env
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
-    ports:
-      - "8080:80"
-    networks:
-      - digitalmenu-network
+  # pg-admin4-management:
+  #   image: dpage/pgadmin4
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+  #     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+  #   ports:
+  #     - "8080:80"
+  #   networks:
+  #     - digitalmenu-network
 
 volumes:
   postgres_menu_data:

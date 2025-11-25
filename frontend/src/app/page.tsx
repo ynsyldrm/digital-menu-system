@@ -10,7 +10,7 @@ import { MenuItem, OrderItem } from '@/types';
 
 export default function HomePage() {
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
-  const [customerId] = useState(() => `customer-${Date.now()}`); // Simple customer ID for demo
+  const [customerId] = useState(() => crypto.randomUUID()); // Guid customer id for demo
 
   const { data: menuItems, isLoading: menuLoading } = useMenuItems();
   const createOrderMutation = useCreateOrder();

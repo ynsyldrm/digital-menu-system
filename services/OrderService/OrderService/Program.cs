@@ -65,8 +65,40 @@ app.UseHttpsRedirection();
 // Order API endpoints
 app.MapPost("/api/orders", async (IMediator mediator, CreateOrderCommand command) =>
 {
-    var result = await mediator.Send(command);
-    return Results.Created($"/api/orders/{result.Id}", result);
+    try
+    {
+        Console.WriteLine($"Received CreateOrderCommand: CustomerId={command.CustomerId}, OrderItemsCount={command.OrderItems.Count()}");
+        foreach (var item in command.OrderItems)
+        {
+            Console.WriteLine($"OrderItem: MenuItemId={item.MenuItemId}, MenuItemName={item.MenuItemName}, Quantity={item.Quantity}, UnitPrice={item.UnitPrice}");
+        }
+
+        // Additional validation logging
+        if (command.CustomerId == Guid.Empty)
+        {
+            Console.WriteLine("Warning: CustomerId is Guid.Empty");
+        }
+        foreach (var item in command.OrderItems)
+        {
+            if (item.MenuItemId == Guid.Empty)
+            {
+                Console.WriteLine($"Warning: MenuItemId is Guid.Empty for {item.MenuItemName}");
+            }
+            if (item.Quantity <= 0)
+            {
+                Console.WriteLine($"Warning: Invalid quantity {item.Quantity} for {item.MenuItemName}");
+            }
+        }
+
+        var result = await mediator.Send(command);
+        return Results.Created($"/api/orders/{result.Id}", result);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error creating order: {ex.Message}");
+        Console.WriteLine($"Stack trace: {ex.StackTrace}");
+        return Results.BadRequest(new { error = ex.Message });
+    }
 })
 .WithName("CreateOrder");
 

@@ -4,8 +4,6 @@ using OrderService.Infrastructure.Repositories;
 using OrderService.Application.Behaviors;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace OrderService;
 
@@ -27,6 +25,9 @@ public static class DependencyInjection
         services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
+            var applicationAssembly = typeof(Application.Handlers.CreateOrderCommandHandler).Assembly;
+            cfg.RegisterServicesFromAssembly(applicationAssembly);
+
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(OutboxBehavior<,>));
         });
 
